@@ -35,19 +35,15 @@ def main():
             adbkey = adbkey[2].strip('\n')[1:]
             c = generateUnlockKey(adbkey[9:])
             print('AT+QADBKEY="{0}"'.format(c))
+            print('To enable ADB, run: (Modem will not sleep with ADB enabled; do \'sudo adb start-server\' after invoking this command.)')
+            print('AT+QCFG="usbcfg",0x2C7C,0x125,1,1,1,1,1,1,0')
+            print('To disable ADB, run: (Modem will not sleep with ADB enabled; do \'sudo adb kill-server\' before invoking this command.)')
+            print('AT+QCFG="usbcfg",0x2C7C,0x125,1,1,1,1,1,0,0')
         except (SerialException, ValueError, IndexError) as e:
             logging.error(e)
         finally:
             if s.is_open and s != None:
                 s.close()
-        # s.r
-        # set SN to your serial number
-        # c = generateUnlockKey(sys.argv[1])      
-        # print('AT+QADBKEY="{0}"'.format(c))
-        # print('To enable ADB, run: (beware that modem will not be able to enter sleep with ADB enabled!!)')
-        # print('AT+QCFG="usbcfg",0x2C7C,0x125,1,1,1,1,1,1,0')
-        # print('To disable ADB, run: (beware that modem will not be able to enter sleep with ADB enabled!!)')
-        # print('AT+QCFG="usbcfg",0x2C7C,0x125,1,1,1,1,1,0,0')
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)
