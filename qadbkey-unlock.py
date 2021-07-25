@@ -17,8 +17,7 @@ def generateUnlockKey(sn):
     @param sn:  the serial number to generate an unlock key for
     """
     salt = "$1${0}$".format(sn)
-    c = crypt("SH_adb_quectel", salt)
-    c = c[12:28]
+    c = crypt("SH_adb_quectel", salt)[12:28]
     print("Salt: {0}\nCrypt: {1}".format(salt, c))
     return c
 
