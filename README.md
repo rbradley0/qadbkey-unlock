@@ -1,6 +1,6 @@
-# Quectel ADBKEY Unlock script
+# Quectel EG25-G ADBKEY Unlock script
 
-As the README title suggests, this is a simple python script that can be used to generate a `QADBKEY` for the Quectel modem used in the [PinePhone](https://www.pine64.org/pinephone/). The original source can be found [here](https://xnux.eu/devices/feature/qadbkey-unlock.c)
+As the README title suggests, this is a simple python script that can be used to generate a `QADBKEY` for the Quectel EG25-G modem used in the [PinePhone](https://www.pine64.org/pinephone/). The original source can be found [here](https://xnux.eu/devices/feature/qadbkey-unlock.c)
 
 ### How To Use
 
