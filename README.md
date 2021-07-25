@@ -8,7 +8,7 @@ To use this script, you must have the following:
 
 * Some variant of Linux, macOS, BSD, whatever... as long as it's not Windows, this script should work.
 * `Python 3+`
-* A `QADBKEY` for the input, read how [here](https://xnux.eu/devices/feature/modem-pp.html) under the `Unlock ADB Access` section.
+* A `QADBKEY` for the input, read [here](https://xnux.eu/devices/feature/modem-pp.html) under the `Unlock ADB Access` section.
 
 Once you have obtained the prerequisites, run the script with either of the following commands:
 
