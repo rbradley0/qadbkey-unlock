@@ -3,33 +3,40 @@
 File: qadbkey-unlock.py
 Authors: hornetfighter515, FatherlyFox
 Year: 2021
-Version: 1.0
+Version: 2.0
 Credits: Original by igem, https://xnux.eu/devices/feature/qadbkey-unlock.c, https://xnux.eu/devices/feature/modem-pp.html
-Description: Works to assist in unlocking of certain PinePhones.
+Description: Works to assist in unlocking ADB access for the PinePhone.
 P.S. Thankyou for making a functional script hornetfighter515 ❤
 """
-
-import sys, logging, os
+import logging, os, argparse
 
 def generateUnlockKey(sn):
     """
-    @param sn:  the serial number to generate an unlock key for
+    @param sn: the serial number to generate an unlock key for
     """
     salt = "$1${0}$".format(sn)
     c = crypt("SH_adb_quectel", salt)
-    print("Salt: {0}\nCrypt: {1}\nCode: {2}\n".format(salt, c, c[12:28]))
+    # print("Salt: {0}\nCrypt: {1}\nCode: {2}\n".format(salt, c, c[12:28]))
     return c[12:28]
 
 def main():
-    if len(sys.argv) != 2 or os.geteuid() != 0:
-        print('This script must be run as a superuser, preferrably using \'sudo\'')
-        print('USAGE: ./qadbkey-unlock.py <device:baudrate>')
+    if os.geteuid() != 0:
+        logging.error('This script must be run as a superuser, preferrably using \'sudo\'')
         exit(1)
     else:
-        s = None
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-d', '--dev', '--device', dest='device', required=True, help='Specify device location, e.g. /dev/ttyUSB2', type=str)
+        parser.add_argument('-b', '--baud', '--baudrate', dest='baudrate', default=115200, required=False, help='Specify serial baudrate, default is 115200', type=int)
+        parser.add_argument('-t', '--tout', '--timeout', dest='timeout', default=2, required=False, help='Specify serial timeout, default is 2', type=int)
+        args = parser.parse_args()
+        
+        s = Serial()
+        s.port = args.device
+        s.baudrate = args.baudrate
+        s.timeout = args.timeout
+        
         try:
-            device_path = sys.argv[1].split(':')
-            s = serial.Serial(port=device_path[0], baudrate=device_path[1], timeout=2)
+            s.open()
             s.write(b'AT+QADBKEY?\r')
             adbkey = s.read_until('OK').decode().split('\r')
             adbkey = adbkey[2].strip('\n')[1:]
@@ -42,15 +49,16 @@ def main():
         except (SerialException, ValueError, IndexError) as e:
             logging.error(e)
         finally:
-            if s.is_open and s != None:
+            if s.isOpen():
                 s.close()
+            else:
+                logging.error("Serial object doesn't exist, no need to close.")
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR)
+    logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
     try:
         from crypt import crypt
-        import serial
-        from serial.serialutil import SerialException
+        from serial import Serial, SerialException
         main()
     except ImportError as e:
         logging.error(e)

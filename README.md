@@ -22,9 +22,9 @@ $ source .venv/bin/activate
 Once you have obtained the prerequisites, run the script with either of the following commands:
 
 ```sh
-$ ./qadbkey-unlock.py <device:baudrate> # device is usually /dev/ttyUSB2 @ 115200 baud on PinePhone.
+$ ./qadbkey-unlock.py -d <device> [-b <baudrate> -t <timeout>] # device is usually /dev/ttyUSB2 @ 115200 baud on PinePhone.
 ...OR...
-$ python qadbkey-unlock.py <device:baudrate> # device is usually /dev/ttyUSB2 @ 115200 baud on PinePhone.
+$ python qadbkey-unlock.py -d <device> [-b <baudrate> -t <timeout>] # device is usually /dev/ttyUSB2 @ 115200 baud on PinePhone.
 ```
 
 ### Contributors
